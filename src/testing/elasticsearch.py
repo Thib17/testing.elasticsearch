@@ -49,6 +49,7 @@ class Elasticsearch(Database):
         self.elasticsearch_home = self.settings.get('elasticsearch_home')
         if self.elasticsearch_home is None:
             self.elasticsearch_home = find_elasticsearch_home()
+        self.elasticsearch_major_version = strip_version(self.elasticsearch_home)[0]
 
         user_config = self.settings.get('elasticsearch_yaml')
         elasticsearch_yaml_path = find_elasticsearch_yaml_path(self.elasticsearch_home)
@@ -59,7 +60,13 @@ class Elasticsearch(Database):
             self.elasticsearch_yaml['path.data'] = os.path.join(self.base_dir, 'data')
             self.elasticsearch_yaml['path.logs'] = os.path.join(self.base_dir, 'logs')
             self.elasticsearch_yaml['cluster.name'] = generate_cluster_name()
-            self.elasticsearch_yaml['discovery.zen.ping.multicast.enabled'] = False
+
+            # disable zen discovery
+            if self.elasticsearch_major_version <= 1:
+                self.elasticsearch_yaml['discovery.zen.ping.multicast.enabled'] = False
+            else:
+                self.elasticsearch_yaml['discovery.zen.ping.unicast.hosts'] = ''
+                self.elasticsearch_yaml['discovery.zen.minimum_master_nodes'] = 0
 
             if user_config:
                 for key, value in user_config.items():
@@ -98,11 +105,13 @@ class Elasticsearch(Database):
             destpath = os.path.join(self.base_dir, 'config')
             copytree(os.path.dirname(elasticsearch_yaml_path), destpath)
 
-        # rewrite elasticsearch.in.sh (for homebrew)
-        with open(os.path.join(self.base_dir, 'bin', 'elasticsearch.in.sh'), 'r+t') as fd:
-            body = re.sub('ES_HOME=.*', '', fd.read())
-            fd.seek(0)
-            fd.write(body)
+        if self.elasticsearch_major_version <= 5:
+            # rewrite elasticsearch.in.sh (for homebrew)
+            # This file doesn't exists anymore in version >=6.x.x
+            with open(os.path.join(self.base_dir, 'bin', 'elasticsearch.in.sh'), 'r+t') as fd:
+                body = re.sub('ES_HOME=.*', '', fd.read())
+                fd.seek(0)
+                fd.write(body)
 
     def prestart(self):
         super(Elasticsearch, self).prestart()
