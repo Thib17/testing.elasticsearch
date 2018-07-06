@@ -1,7 +1,9 @@
 language: python
 python: 3.6
-service: elasticsearch
 env:
+  global:
+    - ES_VERSION=6.3.1
+    - ES_HOME="${TRAVIS_BUILD_DIR}/.deps/elasticsearch-${ES_VERSION}/"
   matrix:
     - TOXENV=py27
     - TOXENV=py33
@@ -12,5 +14,13 @@ env:
 cache:
   directories:
     - $HOME/.cache/pip
+
+before_install:
+  - mkdir .deps
+  - cd .deps
+  - wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}.tar.gz
+  - tar -xvzf elasticsearch-${ES_VERSION}.tar.gz
+  - cd -
+
 install: pip install docutils tox
 script: tox
