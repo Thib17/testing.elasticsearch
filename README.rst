@@ -2,14 +2,14 @@ About
 =====
 ``testing.elasticsearch`` automatically setups a elasticsearch instance in a temporary directory, and destroys it after testing.
 
-.. image:: https://travis-ci.org/tk0miya/testing.elasticsearch.svg?branch=master
-   :target: https://travis-ci.org/tk0miya/testing.elasticsearch
+.. image:: https://travis-ci.org/criteo-forks/testing.elasticsearch.svg?branch=master
+   :target: https://travis-ci.org/criteo-forks/testing.elasticsearch
 
-.. image:: https://coveralls.io/repos/tk0miya/testing.elasticsearch/badge.png?branch=master
-   :target: https://coveralls.io/r/tk0miya/testing.elasticsearch?branch=master
+.. image:: https://coveralls.io/repos/criteo-forks/testing.elasticsearch/badge.png?branch=master
+   :target: https://coveralls.io/r/criteo-forks/testing.elasticsearch?branch=master
 
-.. image:: https://codeclimate.com/github/tk0miya/testing.elasticsearch/badges/gpa.svg
-   :target: https://codeclimate.com/github/tk0miya/testing.elasticsearch
+.. image:: https://codeclimate.com/github/criteo-forks/testing.elasticsearch/badges/gpa.svg
+   :target: https://codeclimate.com/github/criteo-forks/testing.elasticsearch
 
 
 Install
