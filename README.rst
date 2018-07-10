@@ -65,7 +65,7 @@ For example, you can setup new Elasticsearch server for each testcases on setUp(
 
 Requirements
 ============
-* Python 2.7, 3.3, 3.4, 3.5, 3.6
+* Python 2.7, 3.6
 
 License
 =======
