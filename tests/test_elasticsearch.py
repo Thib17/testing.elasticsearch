@@ -28,7 +28,7 @@ class TestElasticsearch(unittest.TestCase):
             # connect to elasticsearch (w/ elasticsearch-py)
             elasticsearch = Elasticsearch(**es.dsn())
             self.assertIsNotNone(elasticsearch)
-            self.assertRegexpMatches(es.read_bootlog(), '\[INFO \]\[node                     \] \[.*?\] started')
+            self.assertRegexpMatches(es.read_bootlog(), '\[INFO \]\[.*[nN]ode\\s+\] \[.*?\] started')
         finally:
             # shutting down
             pid = es.server_pid
@@ -194,3 +194,7 @@ class TestElasticsearch(unittest.TestCase):
         self.assertEqual(True, hasattr(testcase, '__unittest_skip_why__'))
         self.assertEqual(True, testcase.__unittest_skip__)
         self.assertEqual("Elasticsearch not found", testcase.__unittest_skip_why__)
+
+
+if __name__ == "__main__":
+    unittest.main()

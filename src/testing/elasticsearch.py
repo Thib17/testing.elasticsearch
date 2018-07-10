@@ -81,9 +81,10 @@ class Elasticsearch(Database):
     def initialize_database(self):
         # copy data files
         if self.settings['copy_data_from'] and self.elasticsearch_yaml['cluster.name']:
-            indexdir = os.listdir(self.settings['copy_data_from'])[0]
-            os.rename(os.path.join(self.base_dir, 'data', indexdir),
-                      os.path.join(self.base_dir, 'data', self.elasticsearch_yaml['cluster.name']))
+            if self.elasticsearch_major_version <= 2:
+                indexdir = os.listdir(self.settings['copy_data_from'])[0]
+                os.rename(os.path.join(self.base_dir, 'data', indexdir),
+                          os.path.join(self.base_dir, 'data', self.elasticsearch_yaml['cluster.name']))
 
         # conf directory
         for filename in os.listdir(self.elasticsearch_home):
